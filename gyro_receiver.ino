@@ -51,11 +51,11 @@ void loop() {
     int varPitchArm=x[3].toInt();
     int varJaw=x[4].toInt();
 
-    varTwist=map(varTwist,-80,100,5,175);//roll
-    varPitchPalm=map(varPitchPalm,-70,70,25,160);//pitch palm
-    varYaw=map(varYaw,-60,120,0,180);//yaw
+    varTwist=map(varTwist,-80,60,0,180);//roll
+    varPitchPalm=map(varPitchPalm,-60,60,25,160);//pitch palm
+    varYaw=map(varYaw,-50,50,20,160);//yaw
     varPitchArm=map(varPitchArm,-40,40,80,0);//pitch arm
-    varJaw=map(varJaw,125,470,124,65);//jaw
+    varJaw=map(varJaw,125,470,124,60);//jaw
 
     /*varTwist=constrain(varTwist,0,180);//roll
     varPitchPalm=constrain(varPitchPalm,25,160);//pitch palm
