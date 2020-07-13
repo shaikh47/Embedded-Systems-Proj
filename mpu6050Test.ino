@@ -104,7 +104,7 @@ void loop(){
   String data="";
   int sensorValue = analogRead(clawPot);//read the pot value
   
-  if(abs(rotX-errorX1)>6 || abs(rotY-errorY1)>6 || abs(rotZ-errorZ1)>6){
+  if(abs(rotX-errorX1)>3 || abs(rotY-errorY1)>3 || abs(rotZ-errorZ1)>3){
     ax1=ax1+rotX-errorX1;
     ay1=ay1+rotY-errorY1;
     az1=az1+rotZ-errorZ1;
@@ -121,10 +121,8 @@ void loop(){
   //Serial.print("\t ||| \t");
 
   GetMpuValue(MPU2);
-  if(abs(rotX-errorX2)>6 || abs(rotY-errorY2)>6 || abs(rotZ-errorZ2)>6){
-    ax2=ax2+rotX-errorX2;
+  if(abs(rotY-errorY2)>3){
     ay2=ay2+rotY-errorY2;
-    az2=az2+rotZ-errorZ2;
   }
   data=data+String((int)ay2/150)+'$'+sensorValue+'$'+'&';
   //Serial.print("gyro\t");
@@ -170,14 +168,6 @@ void GetMpuValue(const int MPU){
   rotY = gyroY / 131.0; 
   rotZ = gyroZ / 131.0;
 
-
-  int xAng = map(AcX,minVal,maxVal,-90,90);
-  int yAng = map(AcY,minVal,maxVal,-90,90);
-  int zAng = map(AcZ,minVal,maxVal,-90,90);
-
-  x= RAD_TO_DEG * (atan2(-yAng, -zAng)+PI);//degree
-  y= RAD_TO_DEG * (atan2(-xAng, -zAng)+PI);//degree
-  z= RAD_TO_DEG * (atan2(-yAng, -xAng)+PI);//degree
   /*Serial.print("\tAcc\t");
   Serial.print(gForceX);
   Serial.print("\t");
