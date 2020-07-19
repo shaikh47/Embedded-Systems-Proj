@@ -42,11 +42,11 @@ byte arrow[8] = {
   B01000,
 };
 
-byte jawVal[10];
-byte jawTwistVal[10];
-byte secondaryArmVal[10];
-byte mainRotationVal[10];
-byte primaryArmVal[10];
+byte jawVal[30];
+byte jawTwistVal[30];
+byte secondaryArmVal[30];
+byte mainRotationVal[30];
+byte primaryArmVal[30];
 byte recordLength;
 
 void setup() {
@@ -93,7 +93,7 @@ void loop() {
   }
   if(mode==0){
     lcd.setCursor(0,0);
-    lcd.print("MANUAL         ");
+    lcd.print("MANUAL             ");
     lcd.setCursor(0,1);
     lcd.print("                    ");
     joy1x=analogRead(A0);
@@ -255,21 +255,8 @@ void loop() {
       step4=mainRotationVal[k];
       step5=primaryArmVal[k];
 
-   
-      for(int s=0;s<recordLength;s++){
-         Serial.print(jawVal[s]);
-         Serial.print(" ");
-         Serial.print(jawTwistVal[s]);
-         Serial.print(" ");
-         Serial.print(secondaryArmVal[s]);
-         Serial.print(" ");
-         Serial.print(mainRotationVal[s]);
-         Serial.print(" ");
-         Serial.print(primaryArmVal[s]);
-         Serial.println(" ");
-         Serial.println("- - - - - - - - - - - - - - - -- -  ");
-      }
-       delay(1000);
+ 
+      
       
       for(byte x=0;x<diff;x++){
          
@@ -324,23 +311,11 @@ void loop() {
              }   
          }
          delay(40);
-         Serial.print(step1);
-         Serial.print(" ");
-         Serial.print(step2);
-         Serial.print(" ");
-         Serial.print(step3);
-         Serial.print(" ");
-         Serial.print(step4);
-         Serial.print(" ");
-         Serial.print(step5);
-         Serial.print(" ");
-         Serial.print(x);
-         Serial.println("");
       }
       
       if(k>=recordLength-2){
         Serial.println("loop ended");
-        delay(5000);
+        delay(2000);
         k=0;
       }
       else{
@@ -354,7 +329,12 @@ void loop() {
 
 
 void modeChange(){
-    modeFlag=!modeFlag;
+    static unsigned long last_interrupt_time = 0;
+    unsigned long interrupt_time = millis();
+    // If interrupts come faster than 200ms, assume it's a bounce and ignore
+    if (interrupt_time - last_interrupt_time > 200)
+       modeFlag=!modeFlag;
+    last_interrupt_time = interrupt_time;
 }
 
 void menu(){
@@ -364,11 +344,13 @@ void menu(){
   lcd.write(byte(1));
 
   lcd.setCursor(1,0);
-  lcd.print("1.MANUAL MODE");
+  lcd.print("1.MANUAL MODE       ");
   lcd.setCursor(1,1);
-  lcd.print("2.BIONIC MIMIC MODE");
+  lcd.print("2.BIONIC MIMIC MODE ");
   lcd.setCursor(1,2);
-  lcd.print("3.TEACH MODE");
+  lcd.print("3.TEACH MODE        ");
+  lcd.setCursor(0,3);
+  lcd.print("                    ");
 
   if(var>700 && mode<2){
     mode++;
